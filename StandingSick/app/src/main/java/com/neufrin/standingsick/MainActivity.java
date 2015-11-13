@@ -23,10 +23,13 @@ public class MainActivity extends AppCompatActivity {
         //db.AddAnswer(new Answer("No", 1L));
         TextView tv = (TextView)findViewById(R.id.textView1);
         tv.setText("");
-        for(Question q:db.GetQuestions())
+        for(QuestionBundle q:db.GetQuestionBundles())
         {
-            Log.d("Dane z bazy:", q.getId()+" "+q.getContent());
-            tv.setText(tv.getText()+"\n"+q.getId()+" "+q.getContent());
+            tv.setText(tv.getText() + "\n" + q.getQuestion().getId() + " " + q.getQuestion().getContent());
+            for(Answer a:q.GetAnswers())
+            {
+                tv.setText(tv.getText()+ "\n"+a.getId() + " " +a.getContent() + " " +a.getQId());
+            }
         }
     }
 

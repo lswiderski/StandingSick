@@ -42,19 +42,50 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO Questions (Content)" +
                 "VALUES ('Do you have a headache?');");
         db.execSQL("INSERT INTO Answers (Content,QId)" +
-                "VALUES ('Yes',0);");
-        db.execSQL("INSERT INTO Answers (Content,QId)" +
-                "VALUES ('No',0);");
-        db.execSQL("INSERT INTO Answers (Content,QId)" +
                 "VALUES ('Yes',1);");
         db.execSQL("INSERT INTO Answers (Content,QId)" +
                 "VALUES ('No',1);");
+        db.execSQL("INSERT INTO Answers (Content,QId)" +
+                "VALUES ('Yes',2);");
+        db.execSQL("INSERT INTO Answers (Content,QId)" +
+                "VALUES ('No',2);");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
+    public List<QuestionBundle> GetQuestionBundles()
+    {
+        List<QuestionBundle> questions = new LinkedList<QuestionBundle>();
+        SQLiteDatabase db = getReadableDatabase();
+
+
+        Cursor cursor = db.rawQuery("SELECT * FROM Questions",null);
+        while (cursor.moveToNext())
+        {
+            QuestionBundle qBundle = new QuestionBundle();
+            Question question = new Question();
+            question.setId(cursor.getLong(0));
+            question.setContent(cursor.getString(1));
+
+            Cursor answerCursor = db.rawQuery("SELECT Id, Content, QId FROM Answers WHERE QId="+ question.getId(),null);
+            while (answerCursor.moveToNext())
+            {
+                Answer answer = new Answer();
+                answer.setId(answerCursor.getLong(0));
+                answer.setContent(answerCursor.getString(1));
+                answer.setQId(answerCursor.getLong(2));
+                qBundle.AddAnswer(answer);
+            }
+            qBundle.setQuestion(question);
+
+            questions.add(qBundle);
+        }
+
+        return questions;
+    }
+
     public void AddAnswer(Answer answer)
     {
         SQLiteDatabase db = getWritableDatabase();
