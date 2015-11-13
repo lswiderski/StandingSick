@@ -95,7 +95,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         return userAnswers;
     }
+    public List<Session> getSessions()
+    {
+        List<Session> sessions = new LinkedList<Session>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM Sessions ORDER BY Id DESC;", null);
+        while (cursor.moveToNext())
+        {
+            Session session = new Session();
+            session.setId(cursor.getLong(0));
+            Date d = new Date();
+            d.setTime(cursor.getLong(1));
+            session.setDate(d);
+            sessions.add(session);
+        }
 
+        return sessions;
+    }
     public void addSession(Session session)
     {
         SQLiteDatabase db = getWritableDatabase();

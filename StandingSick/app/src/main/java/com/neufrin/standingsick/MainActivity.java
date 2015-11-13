@@ -22,6 +22,11 @@ public class MainActivity extends AppCompatActivity {
         i.putExtra("session", d.getTime());
         startActivity(i);
     }
+    public void goToHistory()
+    {
+        Intent i = new Intent(this,HistoryActivity.class);
+        startActivity(i);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +40,15 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         b.setOnClickListener(l);
+
+        Button bh=(Button)findViewById(R.id.button_history);
+        View.OnClickListener lh = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToHistory();
+            }
+        };
+        bh.setOnClickListener(lh);
     }
 
     @Override
