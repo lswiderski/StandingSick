@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 "                      QId integer," +
                 "                     FOREIGN KEY(QId) REFERENCES Questions(Id));");
         db.execSQL("Create table Sessions (Id integer primary key autoincrement," +
-                "                      Date date);");
+                "                      Date integer);");
         db.execSQL("Create table UserAnswers (Id integer primary key autoincrement," +
                 "                          Session integer," +
                 "                          QId integer," +
@@ -54,6 +55,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+    }
+    public void addSession(Session session)
+    {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("Date", session.getDate().getTime());
+        db.insertOrThrow("Sessions",null,values);
+    }
+    public Session getLastSession()
+    {
+        Session session = new Session();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM Sessions ORDER BY Id DESC LIMIT 1;", null);
+        if(cursor != null) {
+            cursor.moveToFirst();
+            session.setId(cursor.getLong(0));
+            Date d = new Date();
+            d.setTime(cursor.getLong(1));
+            session.setDate(d);
+        }
+
+        return session;
     }
     public List<QuestionBundle> GetQuestionBundles()
     {

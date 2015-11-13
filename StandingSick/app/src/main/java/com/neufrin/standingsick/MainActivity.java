@@ -11,11 +11,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity {
 
     public void startSurvey()
     {
         Intent i = new Intent(this,SurveyActivity.class);
+        Date d = new Date();
+        i.putExtra("session", d.getTime());
         startActivity(i);
     }
     @Override

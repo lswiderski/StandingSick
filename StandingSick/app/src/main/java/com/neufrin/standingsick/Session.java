@@ -9,6 +9,14 @@ public class Session {
     private Long Id;
     private Date Date;
 
+    public  Session()
+    {
+
+    }
+    public Session(Date date)
+    {
+        Date = date;
+    }
     public Long getId() {
         return Id;
     }

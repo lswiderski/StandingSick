@@ -6,14 +6,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import java.util.Date;
+
 public class SurveyActivity extends AppCompatActivity {
 
+    private Session actualSession;
+    private Long actualSessionId;
+    private QuestionBundle actualQuestion;
+    private Long actualQuestionId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_survey);
 
+        Date d = new Date();
+        d.setTime(getIntent().getLongExtra("session", -1));
+
         DatabaseHandler db = new DatabaseHandler(this);
+        db.addSession(new Session(d));
+        actualSession = db.getLastSession();
 
         //db.AddQuestion(new Question("Do you have a fever?"));
         //db.AddQuestion(new Question("Do you have a headache?"));
