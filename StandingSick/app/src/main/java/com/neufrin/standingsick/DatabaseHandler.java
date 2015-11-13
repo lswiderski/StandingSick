@@ -32,14 +32,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("Create table Sessions (Id integer primary key autoincrement," +
                 "                      Date integer);");
         db.execSQL("Create table UserAnswers (Id integer primary key autoincrement," +
-                "                          Session integer," +
+                "                          SessionId integer," +
                 "                          QId integer," +
                 "                          AId integer," +
-                "                          FOREIGN KEY(Session) REFERENCES Sessions(Id)," +
+                "                          FOREIGN KEY(SessionId) REFERENCES Sessions(Id)," +
                 "                          FOREIGN KEY(QId) REFERENCES Questions(Id)," +
                 "                          FOREIGN KEY(AId) REFERENCES Answers(Id));");
         db.execSQL("INSERT INTO Questions (Content)" +
                 "VALUES ('Do you have a fever?');");
+        db.execSQL("INSERT INTO Questions (Content)" +
+                "VALUES ('Do you have a headache?');");
         db.execSQL("INSERT INTO Questions (Content)" +
                 "VALUES ('Do you have a headache?');");
         db.execSQL("INSERT INTO Answers (Content,QId)" +
@@ -50,12 +52,44 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 "VALUES ('Yes',2);");
         db.execSQL("INSERT INTO Answers (Content,QId)" +
                 "VALUES ('No',2);");
+        db.execSQL("INSERT INTO Answers (Content,QId)" +
+                "VALUES ('Yes',3);");
+        db.execSQL("INSERT INTO Answers (Content,QId)" +
+                "VALUES ('No',3);");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
+    public void addUserAnswer(UserAnswer ua)
+    {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("SessionId",ua.getSessionId());
+        values.put("QId", ua.getQId());
+        values.put("AId", ua.getAId());
+        db.insertOrThrow("UserAnswers", null, values);
+    }
+    public List<UserAnswerViewModel> getUserAnswer(int session)
+    {
+        List<UserAnswerViewModel> userAnswers = new LinkedList<UserAnswerViewModel>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT  Questions.Content, Answers.Content FROM UserAnswers "+
+                "JOIN Answers ON Answers.Id = UserAnswers.AId "+
+                "JOIN Questions ON Questions.Id = UserAnswers.Qid "+
+                "WHERE UserAnswers.SessionId="+session+"", null);
+        while (cursor.moveToNext())
+        {
+            UserAnswerViewModel userAnswer = new UserAnswerViewModel();
+            userAnswer.setQuestion(cursor.getString(0));
+            userAnswer.setAnswer(cursor.getString(1));
+            userAnswers.add(userAnswer);
+        }
+
+        return userAnswers;
+    }
+
     public void addSession(Session session)
     {
         SQLiteDatabase db = getWritableDatabase();

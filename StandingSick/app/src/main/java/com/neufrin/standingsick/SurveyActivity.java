@@ -1,5 +1,6 @@
 package com.neufrin.standingsick;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -21,6 +22,10 @@ public class SurveyActivity extends AppCompatActivity {
     private Long actualQuestionId;
     private int actualQuestionIterator;
     private int questionsCount;
+    private int selectedAnswer;
+
+    private DatabaseHandler db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +34,7 @@ public class SurveyActivity extends AppCompatActivity {
         Date d = new Date();
         d.setTime(getIntent().getLongExtra("session", -1));
 
-        DatabaseHandler db = new DatabaseHandler(this);
+        db = new DatabaseHandler(this);
         db.addSession(new Session(d));
         actualSession = db.getLastSession();
 
@@ -37,6 +42,7 @@ public class SurveyActivity extends AppCompatActivity {
         questionsCount = questions.size();
         actualQuestionIterator=0;
         actualQuestionId = questions.get(actualQuestionIterator).getQuestion().getId();
+        selectedAnswer=-1;
         setQuestion();
         Button b=(Button)findViewById(R.id.ButtonNext);
         View.OnClickListener l = new View.OnClickListener() {
@@ -64,22 +70,49 @@ public class SurveyActivity extends AppCompatActivity {
         //    }
         //}
     }
+    public void goToResult()
+    {
+        Intent i = new Intent(this,ResultActivity.class);
+        i.putExtra("sessionId",actualSession.getId());
+        startActivity(i);
+    }
+    public void saveAnswer()
+    {
+        RadioGroup answersGroup = (RadioGroup)findViewById(R.id.SurveyRadio);
+        int id = answersGroup.getCheckedRadioButtonId();
+        selectedAnswer = id;
+
+        if(id==-1)
+        {
+            //no answer
+
+        }
+        else
+        {
+            UserAnswer ua = new UserAnswer();
+            ua.setSessionId(actualSession.getId());
+            ua.setAId((Long.valueOf(selectedAnswer)));
+            ua.setQId(actualQuestion.getQuestion().getId());
+            db.addUserAnswer(ua);
+        }
+    }
     public void nextQuestion()
     {
-        //save answer
-
-        //TODO
+        saveAnswer();
 
         if(actualQuestionIterator<questionsCount-1)
         {
-            //get question
-            actualQuestionIterator++;
-            actualQuestionId = questions.get(actualQuestionIterator).getQuestion().getId();
+            if(selectedAnswer!=-1)
+            {
+                actualQuestionIterator++;
+                actualQuestionId = questions.get(actualQuestionIterator).getQuestion().getId();
+            }
+
             setQuestion();
         }
         else
         {
-            //go to result
+            goToResult();
         }
     }
     public void setQuestion()
@@ -91,12 +124,14 @@ public class SurveyActivity extends AppCompatActivity {
         int answersCount = actualQuestion.getAnswers().size();
         RadioGroup answersGroup = (RadioGroup)findViewById(R.id.SurveyRadio);
         answersGroup.removeAllViews();
+        answersGroup.clearCheck();
         final RadioButton[] rb = new RadioButton[answersCount];
         for (int i=0;i<answersCount;i++)
         {
             rb[i] = new RadioButton(this);
             answersGroup.addView(rb[i]);
             rb[i].setText(actualQuestion.getAnswers().get(i).getContent());
+            rb[i].setId(actualQuestion.getAnswers().get(i).getId().intValue());
         }
 
 

@@ -8,4 +8,5 @@
     <string name="history_survey">History</string>
     <string name="admin_survey">Admin</string>
     <string name="next_question">Next</string>
+    <string name="title_activity_result">ResultActivity</string>
 </resources>

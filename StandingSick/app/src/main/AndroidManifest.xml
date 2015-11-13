@@ -20,6 +20,10 @@
             android:name=".SurveyActivity"
             android:label="@string/title_activity_survey" >
         </activity>
+        <activity
+            android:name=".ResultActivity"
+            android:label="@string/title_activity_result" >
+        </activity>
     </application>
 
 </manifest>

@@ -5,7 +5,7 @@ package com.neufrin.standingsick;
  */
 public class UserAnswer {
     private Long Id;
-    private Long Session;
+    private Long SessionId;
     private Long AId;
     private Long QId;
 
@@ -17,12 +17,12 @@ public class UserAnswer {
         Id = id;
     }
 
-    public Long getSession() {
-        return Session;
+    public Long getSessionId() {
+        return SessionId;
     }
 
-    public void setSession(Long session) {
-        Session = session;
+    public void setSessionId(Long session) {
+        SessionId = session;
     }
 
     public Long getAId() {
