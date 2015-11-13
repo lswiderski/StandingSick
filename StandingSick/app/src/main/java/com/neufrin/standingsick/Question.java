@@ -5,14 +5,23 @@ package com.neufrin.standingsick;
  */
 public class Question {
 
-    private long Id;
+    private Long Id;
     private String Content;
 
-    public long getId() {
+    public Question()
+    {
+
+    }
+    public Question(String content)
+    {
+        Content = content;
+    }
+
+    public Long getId() {
         return Id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         Id = id;
     }
 

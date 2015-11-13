@@ -4,14 +4,33 @@ package com.neufrin.standingsick;
  * Created by neufrin on 13.11.2015.
  */
 public class Answer {
-    private long Id;
+    private Long Id;
+    private Long QId;
     private String Content;
 
-    public long getId() {
+    public Answer()
+    {
+
+    }
+    public Answer(String content, Long qId)
+    {
+        Content = content;
+        QId = qId;
+    }
+
+    public Long getQId() {
+        return QId;
+    }
+
+    public void setQId(Long QId) {
+        this.QId = QId;
+    }
+
+    public Long getId() {
         return Id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         Id = id;
     }
 
