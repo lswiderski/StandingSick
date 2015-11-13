@@ -173,6 +173,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put("QId", answer.getQId());
         db.insertOrThrow("Answers",null,values);
     }
+    public List<Answer> getAnswers(int QId)
+    {
+        SQLiteDatabase db = getReadableDatabase();
+        List<Answer> answers = new LinkedList<Answer>();
+        String[] columns = {"Id", "Content","QId"};
+        String args[] = {QId+""};
+        Cursor cursor = db.query("Answers",columns," Qid=?",args,null,null,null,null);
+        while (cursor.moveToNext())
+        {
+            Answer answer = new Answer();
+            answer.setId(cursor.getLong(0));
+            answer.setContent(cursor.getString(1));
+            answer.setQId(cursor.getLong(2));
+            answers.add(answer);
+        }
+        return answers;
+    }
 
     public void AddQuestion(Question question) {
         SQLiteDatabase db = getWritableDatabase();

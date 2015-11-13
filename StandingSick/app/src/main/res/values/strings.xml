@@ -10,4 +10,6 @@
     <string name="next_question">Next</string>
     <string name="title_activity_result">ResultActivity</string>
     <string name="title_activity_history">HistoryActivity</string>
+    <string name="title_activity_admin">AdminActivity</string>
+    <string name="title_activity_admin_question">AdminQuestionActivity</string>
 </resources>

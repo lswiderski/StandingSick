@@ -28,6 +28,14 @@
             android:name=".HistoryActivity"
             android:label="@string/title_activity_history" >
         </activity>
+        <activity
+            android:name=".AdminActivity"
+            android:label="@string/title_activity_admin" >
+        </activity>
+        <activity
+            android:name=".AdminQuestionActivity"
+            android:label="@string/title_activity_admin_question" >
+        </activity>
     </application>
 
 </manifest>

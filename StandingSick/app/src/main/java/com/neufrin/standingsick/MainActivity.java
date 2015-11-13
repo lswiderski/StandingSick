@@ -27,6 +27,11 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(this,HistoryActivity.class);
         startActivity(i);
     }
+    public void goToAdmin()
+    {
+        Intent i = new Intent(this,AdminActivity.class);
+        startActivity(i);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +54,15 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         bh.setOnClickListener(lh);
+
+        Button ba=(Button)findViewById(R.id.button_admin);
+        View.OnClickListener la = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToAdmin();
+            }
+        };
+        ba.setOnClickListener(la);
     }
 
     @Override
