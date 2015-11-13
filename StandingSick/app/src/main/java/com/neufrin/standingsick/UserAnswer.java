@@ -8,6 +8,24 @@ public class UserAnswer {
     private Long SessionId;
     private Long AId;
     private Long QId;
+    private String Question;
+    private String Answer;
+
+    public String getQuestion() {
+        return Question;
+    }
+
+    public void setQuestion(String question) {
+        Question = question;
+    }
+
+    public String getAnswer() {
+        return Answer;
+    }
+
+    public void setAnswer(String answer) {
+        Answer = answer;
+    }
 
     public Long getId() {
         return Id;

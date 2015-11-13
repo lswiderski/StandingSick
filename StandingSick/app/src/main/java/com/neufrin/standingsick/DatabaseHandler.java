@@ -35,6 +35,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 "                          SessionId integer," +
                 "                          QId integer," +
                 "                          AId integer," +
+                "                          Question text," +
+                "                          Answer text," +
                 "                          FOREIGN KEY(SessionId) REFERENCES Sessions(Id)," +
                 "                          FOREIGN KEY(QId) REFERENCES Questions(Id)," +
                 "                          FOREIGN KEY(AId) REFERENCES Answers(Id));");
@@ -69,15 +71,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put("SessionId",ua.getSessionId());
         values.put("QId", ua.getQId());
         values.put("AId", ua.getAId());
+        values.put("Answer", ua.getAnswer());
+        values.put("Question", ua.getQuestion());
         db.insertOrThrow("UserAnswers", null, values);
     }
     public List<UserAnswerViewModel> getUserAnswer(int session)
     {
         List<UserAnswerViewModel> userAnswers = new LinkedList<UserAnswerViewModel>();
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT  Questions.Content, Answers.Content FROM UserAnswers "+
-                "JOIN Answers ON Answers.Id = UserAnswers.AId "+
-                "JOIN Questions ON Questions.Id = UserAnswers.Qid "+
+        //Cursor cursor = db.rawQuery("SELECT  Questions.Content, Answers.Content FROM UserAnswers " +
+        //        "JOIN Answers ON Answers.Id = UserAnswers.AId " +
+        //        "JOIN Questions ON Questions.Id = UserAnswers.Qid " +
+        //        "WHERE UserAnswers.SessionId=" + session + "", null);
+        Cursor cursor = db.rawQuery("SELECT  Question, Answer FROM UserAnswers "+
                 "WHERE UserAnswers.SessionId="+session+"", null);
         while (cursor.moveToNext())
         {

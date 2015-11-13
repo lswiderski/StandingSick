@@ -93,6 +93,8 @@ public class SurveyActivity extends AppCompatActivity {
             ua.setSessionId(actualSession.getId());
             ua.setAId((Long.valueOf(selectedAnswer)));
             ua.setQId(actualQuestion.getQuestion().getId());
+            ua.setAnswer(((RadioButton)findViewById(answersGroup.getCheckedRadioButtonId())).getText().toString());
+            ua.setQuestion(actualQuestion.getQuestion().getContent());
             db.addUserAnswer(ua);
         }
     }
