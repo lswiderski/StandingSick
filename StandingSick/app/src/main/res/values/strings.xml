@@ -7,4 +7,5 @@
     <string name="start_survey">Start</string>
     <string name="history_survey">History</string>
     <string name="admin_survey">Admin</string>
+    <string name="next_question">Next</string>
 </resources>

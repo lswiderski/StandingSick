@@ -118,12 +118,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.insertOrThrow("Answers",null,values);
     }
 
-    public void AddQuestion(Question question)
-    {
+    public void AddQuestion(Question question) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("Content", question.getContent());
-        db.insertOrThrow("Questions",null,values);
+        db.insertOrThrow("Questions", null, values);
     }
     public Question GetQuestion(int id)
     {
