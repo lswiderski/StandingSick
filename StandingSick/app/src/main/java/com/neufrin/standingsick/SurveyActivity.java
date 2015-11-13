@@ -1,42 +1,42 @@
 package com.neufrin.standingsick;
 
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class SurveyActivity extends AppCompatActivity {
 
-    public void startSurvey()
-    {
-        Intent i = new Intent(this,SurveyActivity.class);
-        startActivity(i);
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_survey);
 
-        Button b=(Button)findViewById(R.id.button_start);
-        View.OnClickListener l = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startSurvey();
+        DatabaseHandler db = new DatabaseHandler(this);
+
+        //db.AddQuestion(new Question("Do you have a fever?"));
+        //db.AddQuestion(new Question("Do you have a headache?"));
+        //db.AddAnswer(new Answer("Yes", 0L));
+        //db.AddAnswer(new Answer("No", 0L));
+        //db.AddAnswer(new Answer("Yes", 1L));
+        //db.AddAnswer(new Answer("No", 1L));
+        TextView tv = (TextView)findViewById(R.id.textView1);
+        tv.setText("");
+        for(QuestionBundle q:db.GetQuestionBundles())
+        {
+            tv.setText(tv.getText() + "\n" + q.getQuestion().getId() + " " + q.getQuestion().getContent());
+            for(Answer a:q.GetAnswers())
+            {
+                tv.setText(tv.getText()+ "\n"+a.getId() + " " +a.getContent() + " " +a.getQId());
             }
-        };
-        b.setOnClickListener(l);
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_survey, menu);
         return true;
     }
 
