@@ -8,10 +8,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ResultActivity extends AppCompatActivity {
 
     private DatabaseHandler db;
+    private String content;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,11 +23,12 @@ public class ResultActivity extends AppCompatActivity {
        Long sessionId = getIntent().getLongExtra("sessionId", -1);
         TextView tv = (TextView)findViewById(R.id.result);
         tv.setText("");
+        content = "";
         for(UserAnswerViewModel q:db.getUserAnswer(sessionId.intValue()))
         {
-            tv.setText(tv.getText() + "\n" + q.getQuestion() + ": " + q.getAnswer());
+            content = content + "\n" + q.getQuestion() + ":" + q.getAnswer();
         }
-
+        tv.setText(content);
         Button bb=(Button)findViewById(R.id.BackButton);
         View.OnClickListener l1 = new View.OnClickListener() {
             @Override
@@ -42,6 +45,15 @@ public class ResultActivity extends AppCompatActivity {
             }
         };
         bs.setOnClickListener(l2);
+
+        Button bsave=(Button)findViewById(R.id.SendButton);
+        View.OnClickListener l3 = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SaveResult();
+            }
+        };
+        bsave.setOnClickListener(l3);
     }
 
     public void goBack()
@@ -52,6 +64,19 @@ public class ResultActivity extends AppCompatActivity {
     public void SendResult()
     {
 
+    }
+    public void SaveResult()
+    {
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("message/rfc822");
+        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"recipient@example.com"});
+        i.putExtra(Intent.EXTRA_SUBJECT, "medical report");
+        i.putExtra(Intent.EXTRA_TEXT   , content);
+        try {
+            startActivity(Intent.createChooser(i, "Send mail..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(ResultActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

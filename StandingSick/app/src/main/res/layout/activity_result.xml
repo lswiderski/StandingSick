@@ -24,6 +24,11 @@
             android:layout_height="wrap_content"
             android:text="Send"
             android:id="@+id/SendButton"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save TXT"
+            android:id="@+id/SaveButton"/>
     </LinearLayout>
 
 </LinearLayout>
