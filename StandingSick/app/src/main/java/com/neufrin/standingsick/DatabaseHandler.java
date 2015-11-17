@@ -173,6 +173,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put("QId", answer.getQId());
         db.insertOrThrow("Answers",null,values);
     }
+    public void removeAnswer(int id)
+    {
+        SQLiteDatabase db = getWritableDatabase();
+        String[] args = {""+id};
+        db.delete("Answers","Id=?",args);
+    }
+    public void updateAnswer(Answer answer)
+    {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("Content",answer.getContent());
+        values.put("QId", answer.getQId());
+        String[] args = {""+answer.getId()};
+        db.update("Answers",values,"Id=?",args);
+    }
     public List<Answer> getAnswers(int QId)
     {
         SQLiteDatabase db = getReadableDatabase();
@@ -189,6 +204,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             answers.add(answer);
         }
         return answers;
+    }
+    public int getLastAnswerId()
+    {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT Id FROM Answers ORDER BY Id DESC LIMIT 1;", null);
+        if(cursor != null) {
+            cursor.moveToFirst();
+            return (int)cursor.getLong(0);
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     public void AddQuestion(Question question) {
