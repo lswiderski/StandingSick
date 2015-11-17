@@ -104,11 +104,8 @@ public class SurveyActivity extends AppCompatActivity {
 
         if(actualQuestionIterator<questionsCount-1)
         {
-            if(selectedAnswer!=-1)
-            {
-                actualQuestionIterator++;
-                actualQuestionId = questions.get(actualQuestionIterator).getQuestion().getId();
-            }
+            actualQuestionIterator++;
+            actualQuestionId = questions.get(actualQuestionIterator).getQuestion().getId();
 
             setQuestion();
         }

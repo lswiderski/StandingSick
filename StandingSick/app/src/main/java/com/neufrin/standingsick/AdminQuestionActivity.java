@@ -63,18 +63,21 @@ public class AdminQuestionActivity extends AppCompatActivity {
                         removeAnswer(id);
                     }
                 });
-
             }
-
-
-
+        }
+        else
+        {
+            question = new Question();
+            question.setContent("");
+            question.setId(Long.valueOf(db.getLastQuestionId()+1));
+            db.AddQuestion(question);
         }
 
         Button back=(Button)findViewById(R.id.BackFromAdminQuestions);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToAdminMenu();
+                saveAndGoToAdminMenu();
             }
         });
 
@@ -85,10 +88,19 @@ public class AdminQuestionActivity extends AppCompatActivity {
                 addAnswer();
             }
         });
+
+        Button rq=(Button)findViewById(R.id.RemoveQuestion);
+        rq.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeQuestion();
+            }
+        });
     }
     public void removeQuestion()
     {
-
+        db.removeQuestion(question.getId().intValue());
+        goToAdminMenu();
     }
     public void removeAnswer(int id)
     {
@@ -130,9 +142,8 @@ public class AdminQuestionActivity extends AppCompatActivity {
         });
 
     }
-    public void goToAdminMenu()
+    public void saveAndGoToAdminMenu()
     {
-        //TODO Save changes to db
         LinearLayout ll = (LinearLayout)findViewById(R.id.AdminAnswersLayout);
         int buttons = ll.getChildCount();
         for (int i=0;i<buttons;i++)
@@ -141,14 +152,21 @@ public class AdminQuestionActivity extends AppCompatActivity {
             answer.setQId(question.getId());
             LinearLayout la = (LinearLayout)ll.getChildAt(i);
             answer.setContent(((EditText)la.getChildAt(0)).getText().toString());
-            answer.setId(Long.valueOf(((Button)la.getChildAt(1)).getId()));
+            answer.setId(Long.valueOf(((Button) la.getChildAt(1)).getId()));
             db.updateAnswer(answer);
         }
 
+        question.setContent(((EditText) findViewById(R.id.QuestionTitle)).getText().toString());
+        db.updateQuestion(question);
+        goToAdminMenu();
 
+
+    }
+    public void goToAdminMenu() {
         Intent i = new Intent(this,AdminActivity.class);
         startActivity(i);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -68,7 +68,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("SessionId",ua.getSessionId());
+        values.put("SessionId", ua.getSessionId());
         values.put("QId", ua.getQId());
         values.put("AId", ua.getAId());
         values.put("Answer", ua.getAnswer());
@@ -177,7 +177,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     {
         SQLiteDatabase db = getWritableDatabase();
         String[] args = {""+id};
-        db.delete("Answers","Id=?",args);
+        db.delete("Answers", "Id=?", args);
     }
     public void updateAnswer(Answer answer)
     {
@@ -186,7 +186,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put("Content",answer.getContent());
         values.put("QId", answer.getQId());
         String[] args = {""+answer.getId()};
-        db.update("Answers",values,"Id=?",args);
+        db.update("Answers", values, "Id=?", args);
     }
     public List<Answer> getAnswers(int QId)
     {
@@ -217,6 +217,34 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         {
             return 0;
         }
+    }
+
+    public int getLastQuestionId()
+    {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT Id FROM Questions ORDER BY Id DESC LIMIT 1;", null);
+        if(cursor != null) {
+            cursor.moveToFirst();
+            return (int)cursor.getLong(0);
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    public void removeQuestion(int id)
+    {
+        SQLiteDatabase db = getWritableDatabase();
+        String[] args = {""+id};
+        db.delete("Questions", "Id=?", args);
+    }
+    public void updateQuestion(Question question)
+    {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("Content",question.getContent());
+        String[] args = {""+question.getId()};
+        db.update("Questions", values, "Id=?", args);
     }
 
     public void AddQuestion(Question question) {
