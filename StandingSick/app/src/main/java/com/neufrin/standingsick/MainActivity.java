@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void goToAdmin()
     {
-        Intent i = new Intent(this,AdminActivity.class);
+        Intent i = new Intent(this,PasswordActivity.class);
         startActivity(i);
     }
     @Override

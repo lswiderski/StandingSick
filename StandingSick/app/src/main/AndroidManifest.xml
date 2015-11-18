@@ -36,6 +36,10 @@
             android:name=".AdminQuestionActivity"
             android:label="@string/title_activity_admin_question" >
         </activity>
+        <activity
+            android:name=".PasswordActivity"
+            android:label="@string/title_activity_password" >
+        </activity>
     </application>
 
 </manifest>
