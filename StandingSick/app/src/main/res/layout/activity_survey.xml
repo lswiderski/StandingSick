@@ -5,28 +5,36 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.neufrin.standingsick.SurveyActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:baselineAligned="true">
 
     <TextView
         android:id="@+id/Question"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="16dp"
-        android:text="TextView" />
-    <RadioGroup
+        android:text="TextView"
+        android:layout_weight="0.2"
+        android:gravity="center" />
+    <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/SurveyRadio"
-        android:orientation="vertical"></RadioGroup>
+        android:layout_weight="1">
+        <RadioGroup
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/SurveyRadio"
+            android:orientation="vertical"
+            android:layout_weight="1"></RadioGroup>
+        </ScrollView>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="end"
         android:text="@string/next_question"
         android:id="@+id/ButtonNext"
-        />
+        android:layout_gravity="bottom|right" />
 
 </LinearLayout>

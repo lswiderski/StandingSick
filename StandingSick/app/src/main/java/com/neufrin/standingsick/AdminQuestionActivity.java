@@ -49,7 +49,7 @@ public class AdminQuestionActivity extends AppCompatActivity {
 
                 eta[i] = new EditText(this);
                 la[i].addView(eta[i]);
-                eta[i].setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                eta[i].setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
                 eta[i].setText(answers.get(i).getContent());
 
                 ba[i] = new Button(this);
@@ -57,7 +57,6 @@ public class AdminQuestionActivity extends AppCompatActivity {
                 ba[i].setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 ba[i].setText("X");
                 ba[i].setId(answers.get(i).getId().intValue());
-                ba[i].setGravity(Gravity.RIGHT);
                 ba[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -109,7 +108,7 @@ public class AdminQuestionActivity extends AppCompatActivity {
         LinearLayout ll = (LinearLayout)findViewById(R.id.AdminAnswersLayout);
 
         Button Xbutton = (Button)findViewById(id);
-        ll.removeView((ViewGroup)Xbutton.getParent());
+        ll.removeView((ViewGroup) Xbutton.getParent());
         db.removeAnswer(id);
 
     }
@@ -128,7 +127,7 @@ public class AdminQuestionActivity extends AppCompatActivity {
 
         EditText eta = new EditText(this);
         la.addView(eta);
-        eta.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        eta.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT,1));
 
         Button ba = new Button(this);
         la.addView(ba);

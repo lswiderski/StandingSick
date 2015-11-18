@@ -45,19 +45,29 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO Questions (Content)" +
                 "VALUES ('Do you have a headache?');");
         db.execSQL("INSERT INTO Questions (Content)" +
-                "VALUES ('Do you have a headache?');");
+                "VALUES ('Do you feel pain in the abdomen?');");
+        db.execSQL("INSERT INTO Questions (Content)" +
+                "VALUES ('Do you feel pain in the arms or legs?');");
         db.execSQL("INSERT INTO Answers (Content,QId)" +
                 "VALUES ('Yes',1);");
         db.execSQL("INSERT INTO Answers (Content,QId)" +
                 "VALUES ('No',1);");
         db.execSQL("INSERT INTO Answers (Content,QId)" +
+                "VALUES ('I don''t know',1);");
+        db.execSQL("INSERT INTO Answers (Content,QId)" +
                 "VALUES ('Yes',2);");
         db.execSQL("INSERT INTO Answers (Content,QId)" +
                 "VALUES ('No',2);");
         db.execSQL("INSERT INTO Answers (Content,QId)" +
+                "VALUES ('I don''t know',2);");
+        db.execSQL("INSERT INTO Answers (Content,QId)" +
                 "VALUES ('Yes',3);");
         db.execSQL("INSERT INTO Answers (Content,QId)" +
                 "VALUES ('No',3);");
+        db.execSQL("INSERT INTO Answers (Content,QId)" +
+                "VALUES ('Yes',4);");
+        db.execSQL("INSERT INTO Answers (Content,QId)" +
+                "VALUES ('No',4);");
     }
 
     @Override
@@ -79,10 +89,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     {
         List<UserAnswerViewModel> userAnswers = new LinkedList<UserAnswerViewModel>();
         SQLiteDatabase db = getReadableDatabase();
-        //Cursor cursor = db.rawQuery("SELECT  Questions.Content, Answers.Content FROM UserAnswers " +
-        //        "JOIN Answers ON Answers.Id = UserAnswers.AId " +
-        //        "JOIN Questions ON Questions.Id = UserAnswers.Qid " +
-        //        "WHERE UserAnswers.SessionId=" + session + "", null);
         Cursor cursor = db.rawQuery("SELECT  Question, Answer FROM UserAnswers "+
                 "WHERE UserAnswers.SessionId="+session+"", null);
         while (cursor.moveToNext())

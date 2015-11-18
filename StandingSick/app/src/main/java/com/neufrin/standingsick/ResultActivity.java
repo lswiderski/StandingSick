@@ -34,7 +34,7 @@ public class ResultActivity extends AppCompatActivity {
         content = "";
         for(UserAnswerViewModel q:db.getUserAnswer(sessionId.intValue()))
         {
-            content = content + "\n" + q.getQuestion() + ":" + q.getAnswer();
+            content = content + "\n" + q.getQuestion() + ": " + q.getAnswer();
         }
         tv.setText(content);
         Button bb=(Button)findViewById(R.id.BackButton);

@@ -9,7 +9,7 @@
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        >
+        android:layout_weight="1">
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -20,20 +20,22 @@
     </LinearLayout>
     </ScrollView>
     <LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="fill_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
-    >
+        android:gravity="center">
         <Button
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="back"
-            android:id="@+id/backFromAdmin"/>
+            android:id="@+id/backFromAdmin"
+            android:layout_weight="1" />
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Add new"
-            android:id="@+id/addNewQuestion"/>
+            android:id="@+id/addNewQuestion"
+            android:layout_weight="1" />
     </LinearLayout>
 
 </LinearLayout>
