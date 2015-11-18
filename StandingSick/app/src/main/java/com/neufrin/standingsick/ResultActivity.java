@@ -1,14 +1,22 @@
 package com.neufrin.standingsick;
 
 import android.content.Intent;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 public class ResultActivity extends AppCompatActivity {
 
@@ -46,7 +54,7 @@ public class ResultActivity extends AppCompatActivity {
         };
         bs.setOnClickListener(l2);
 
-        Button bsave=(Button)findViewById(R.id.SendButton);
+        Button bsave=(Button)findViewById(R.id.SaveButton);
         View.OnClickListener l3 = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,41 +71,64 @@ public class ResultActivity extends AppCompatActivity {
     }
     public void SendResult()
     {
-
-    }
-    public void SaveResult()
-    {
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
-        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"recipient@example.com"});
         i.putExtra(Intent.EXTRA_SUBJECT, "medical report");
-        i.putExtra(Intent.EXTRA_TEXT   , content);
+        i.putExtra(Intent.EXTRA_TEXT, content);
         try {
             startActivity(Intent.createChooser(i, "Send mail..."));
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(ResultActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
         }
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_result, menu);
-        return true;
+    public void SaveResult()
+    {
+        if(!isExternalStorageWritable())
+        {
+            Toast.makeText(ResultActivity.this, "Cannot Save the file", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        File path = getFileStorageDir("StandingSick");
+        File report = new File(path,"medical_report.txt");
+        try {
+            FileOutputStream f = new FileOutputStream(report);
+            PrintWriter pw = new PrintWriter(f);
+            pw.println(content);
+            pw.flush();
+            pw.close();
+            f.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Toast.makeText(ResultActivity.this, "Error", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Toast.makeText(ResultActivity.this, "Report saved at \\Documents\\StandingSick\\medical_report.txt", Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+    /* Checks if external storage is available for read and write */
+    public boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
             return true;
         }
+        return false;
+    }
 
-        return super.onOptionsItemSelected(item);
+    /* Checks if external storage is available to at least read */
+    public boolean isExternalStorageReadable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state) ||
+                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            return true;
+        }
+        return false;
+    }
+    public File getFileStorageDir(String filePath) {
+        // Get the directory for the user's public documents directory.
+        File file = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOCUMENTS), filePath);
+
+        return file;
     }
 }

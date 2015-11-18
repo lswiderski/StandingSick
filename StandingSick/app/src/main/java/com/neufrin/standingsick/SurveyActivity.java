@@ -19,7 +19,6 @@ public class SurveyActivity extends AppCompatActivity {
     private Session actualSession;
     private List<QuestionBundle> questions;
     private QuestionBundle actualQuestion;
-    private Long actualQuestionId;
     private int actualQuestionIterator;
     private int questionsCount;
     private int selectedAnswer;
@@ -41,7 +40,7 @@ public class SurveyActivity extends AppCompatActivity {
         questions = db.GetQuestionBundles();
         questionsCount = questions.size();
         actualQuestionIterator=0;
-        actualQuestionId = questions.get(actualQuestionIterator).getQuestion().getId();
+
         selectedAnswer=-1;
         setQuestion();
         Button b=(Button)findViewById(R.id.ButtonNext);
@@ -52,23 +51,6 @@ public class SurveyActivity extends AppCompatActivity {
             }
         };
         b.setOnClickListener(l);
-
-        //db.AddQuestion(new Question("Do you have a fever?"));
-        //db.AddQuestion(new Question("Do you have a headache?"));
-        //db.AddAnswer(new Answer("Yes", 0L));
-        //db.AddAnswer(new Answer("No", 0L));
-        //db.AddAnswer(new Answer("Yes", 1L));
-        //db.AddAnswer(new Answer("No", 1L));
-        //TextView tv = (TextView)findViewById(R.id.textView1);
-        //tv.setText("");
-        //for(QuestionBundle q:db.GetQuestionBundles())
-        //{
-        //    tv.setText(tv.getText() + "\n" + q.getQuestion().getId() + " " + q.getQuestion().getContent());
-        //    for(Answer a:q.GetAnswers())
-        //    {
-        //        tv.setText(tv.getText()+ "\n"+a.getId() + " " +a.getContent() + " " +a.getQId());
-        //    }
-        //}
     }
     public void goToResult()
     {
@@ -105,8 +87,6 @@ public class SurveyActivity extends AppCompatActivity {
         if(actualQuestionIterator<questionsCount-1)
         {
             actualQuestionIterator++;
-            actualQuestionId = questions.get(actualQuestionIterator).getQuestion().getId();
-
             setQuestion();
         }
         else
@@ -134,26 +114,5 @@ public class SurveyActivity extends AppCompatActivity {
         }
 
 
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_survey, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }
